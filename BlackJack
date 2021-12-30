@@ -1,0 +1,76 @@
+import random #import random to shuffle
+#create cards that will take suit,face, values. 
+class Card():
+    def __init__(self, suit, face, value):
+        self.suit = suit
+        self.face = face
+        self.value = value
+        
+    def return_card(self):
+        return self.face + " of " + self.suit   
+ 
+#make a deck of cards. This will cycle through each suit and face to pair them up.       
+class DeckOfCards():
+    def __init__(self):
+        self.deck = []
+        self.suits = ["Hearts","Diamonds", "Spades", "Clubs"]
+        self.faces = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
+        self.values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
+        self.play_index = 0
+        for suit in self.suits:
+            i = 0
+            for i in range(len(self.faces)):
+                self.deck.append(Card(suit,self.faces[i], self.values[i]))
+                
+    def shuffle_deck(self): # shuffle the deck for the user
+        random.shuffle(self.deck)
+    
+    def print_deck(self): # print the deck for the user to see.
+        for card in self.deck:
+            print(card.face, "of", card.suit, end = ", ")
+        print()
+            
+    def get_card(self): # get the top card to add to the users hand.
+        self.play_index += 1
+        return self.deck[self.play_index-1]
+
+#creating a user hand so they can play the game.         
+class UserHand():
+    def __init__(self):
+        self.cards = []
+        self.value = 0
+        self.deck = DeckOfCards()
+        self.hand = []
+        
+    def make_hand(self):
+        for i in range(2):
+            self.hand.append(self.deck.get_card())
+    
+    def show_hand(self):
+        for card in self.hand:
+            print(card.return_card())
+    
+    def calc_hand(self):
+        self.value = 0
+        for card in self.hand:
+            try:
+                value = int(card.face)
+                self.value += value
+                
+            except:
+                if card.face == "Ace":
+                    self.value += 11
+                else:
+                    self.value += 10
+        print("Your hands value is: ", self.value)
+        
+            
+    def hit(self):#when user calls hit it will add the next card to their hand.
+        self.hand.append(self.deck.get_card())
+        
+    def clear_hand(self): # when the user wants to play the game again it will return all of the cards and reshuffle the deck. 
+        self.card = []
+        self.value = 0
+        self.deck = DeckOfCards()
+        self.hand = []   
+
